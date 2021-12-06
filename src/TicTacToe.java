@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
 //SuppressWarnings unused and serial
 @SuppressWarnings({"unused", "serial"})
 
@@ -107,8 +108,8 @@ public class TicTacToe extends JFrame implements ActionListener {
 
 
         //Add panels
-        getContentPane().add(gamePanel);
         getContentPane().add(controlPanel);
+        getContentPane().add(gamePanel);
 
         //Set GUI window to visible and disable resizing
         setVisible(true);
@@ -116,57 +117,56 @@ public class TicTacToe extends JFrame implements ActionListener {
 
     }
 
+    public void resetGame() {
+        //Reset button text
+        b1.setText("");
+        b2.setText("");
+        b3.setText("");
+        b4.setText("");
+        b5.setText("");
+        b6.setText("");
+        b7.setText("");
+        b8.setText("");
+        b9.setText("");
+
+        //Reset clicked checks
+        c1 = true;
+        c2 = true;
+        c3 = true;
+        c4 = true;
+        c5 = true;
+        c6 = true;
+        c7 = true;
+        c8 = true;
+        c9 = true;
+
+        //Reset moves
+        for (int i = 1; i <= 9; i++)
+            aMoves[i] = '\u0000';
+
+        //For Future Development (PVC)
+        //Reset wins
+        //Xwin = false;
+        //Owin = false;
+
+        //Reset check
+        check = true;
+
+        //Reset counter - Simply comment the next line out if it is desired for X and O to take turns starting each game.
+        count = 0;
+    }
+
     //Main method
     public static void main(String[] args) {
-
         //Creates 'Tic Tac Toe' window
         new TicTacToe();
-
     }
 
     //Event-handling method
     public void actionPerformed(ActionEvent event) {
-
         //Handle control clicks
         if (newP == event.getSource()) {
-
-            //Reset button text
-            b1.setText("");
-            b2.setText("");
-            b3.setText("");
-            b4.setText("");
-            b5.setText("");
-            b6.setText("");
-            b7.setText("");
-            b8.setText("");
-            b9.setText("");
-
-            //Reset clicked checks
-            c1 = true;
-            c2 = true;
-            c3 = true;
-            c4 = true;
-            c5 = true;
-            c6 = true;
-            c7 = true;
-            c8 = true;
-            c9 = true;
-
-            //Reset moves
-            for (int i = 1; i <= 9; i++)
-                aMoves[i] = '\u0000';
-
-            //For Future Development (PVC)
-            //Reset wins
-            //Xwin = false;
-            //Owin = false;
-
-            //Reset check
-            check = true;
-
-            //Reset counter - Simply comment the next line out if it is desired for X and O to take turns starting each game.
-            count = 0;
-
+            resetGame();
         }
 
         //Handle game clicks
@@ -234,9 +234,7 @@ public class TicTacToe extends JFrame implements ActionListener {
                 aMoves[9] = 'X';
                 count++;
             }
-
         }
-
         else {
             if (b1 == event.getSource() && c1) {
                 b1.setText("O");

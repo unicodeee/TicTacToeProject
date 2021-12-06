@@ -1,10 +1,4 @@
-/*
- * Author: Raymond Li
- * Date: 2018-01-24
- * Description: Tic Tac Toe program with GUI (PVP only) 
- */
 
-//Import java GUI classes
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

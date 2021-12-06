@@ -1,10 +1,9 @@
 package src.mainGUI;
 
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import src.TicTacToe ;
 
 public class MainFrame extends JFrame implements ActionListener{
     private JTextField textField1;
@@ -18,6 +17,7 @@ public class MainFrame extends JFrame implements ActionListener{
     private JPanel gamePanel;
     private JButton button1;
     private JButton button2;
+    private JButton playButton;
 
     private JLabel label1 = new JLabel("AAAAAAAAAA");
 
@@ -31,6 +31,7 @@ public class MainFrame extends JFrame implements ActionListener{
         //Set title, size, layout (grid [2x1]), and location of GUI window
         setTitle("Tic Tac Toe");
         setSize(1000, 400);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //Add panels
         getContentPane().add(gamePanel);
@@ -41,10 +42,12 @@ public class MainFrame extends JFrame implements ActionListener{
         // add ActionListener to buttons
         button1.addActionListener(this);
         button2.addActionListener(this);
+        playButton.addActionListener(this);
     }
 
     public static void main(String[] args) {
         new MainFrame();
+
     }
 
     @Override
@@ -55,5 +58,10 @@ public class MainFrame extends JFrame implements ActionListener{
         if (e.getSource() == button2) {
             System.out.println(textField2.getText());  // get Player2's name in textfiled2
         }
+        if (e.getSource() == playButton) {
+
+            new TicTacToe();
+        }
+
     }
 }

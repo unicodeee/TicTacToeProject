@@ -3,17 +3,14 @@ package src;
 public class Player {
     private int age;
     private String name;
-    private boolean win;
 
     public Player(){
         this.age =  0;
         this.name = null;
-        this.win = Boolean.parseBoolean(null);
     }
-    public Player(int age,String name, boolean win){
+    public Player(int age,String name){
         this.age =  age;
         this.name = name;
-        this.win = win;
     }
     public int getAge() {
         return age;
@@ -31,16 +28,8 @@ public class Player {
         this.name = name;
     }
 
-    public boolean isWin() {
-        return win;
-    }
-
-    public void setWin(boolean win) {
-        this.win = win;
-    }
-
     @Override
     public String toString(){
-        return " " + getAge() + " " + getName() + " " + isWin() + " " ;
+        return " " + getAge() + " " + getName() + " " ;
     }
 }

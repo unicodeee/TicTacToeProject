@@ -11,16 +11,16 @@ import java.awt.event.*;
 //Main class with JFrame and ActionListener enabled
 public class TicTacToe extends JFrame implements ActionListener {
 
+    public boolean playing = false;
+    public boolean playerXWin = false;
+    public boolean playerOWin = false;
+
     //Add panels
     JPanel gamePanel = new JPanel();
     JPanel controlPanel = new JPanel();
 
     //Add control buttons
-    JButton newP = new JButton("New PVP"); //(New Version, simpler)
-
-    //For Future Development (PVC)
-    //JButton newX = new JButton("New game as X");
-    //JButton newO = new JButton("New game as O");
+    JButton resetButton = new JButton("New PVP"); //(New Version, simpler)
 
     //Add game buttons
     JButton b1 = new JButton();
@@ -39,11 +39,11 @@ public class TicTacToe extends JFrame implements ActionListener {
     private static char[] aMoves = new char[10];
     private static boolean check = true;
 
-    //For Future Development (PVC)
-    //private static boolean Xwin = false, Owin = false;
 
     //Constructor
     public TicTacToe() {
+        // Set playing status to true
+        playing = true;
 
         //Set title, size, layout (grid [2x1]), and location of GUI window
         setTitle("Tic Tac Toe");
@@ -81,18 +81,10 @@ public class TicTacToe extends JFrame implements ActionListener {
         b9.addActionListener(this);
 
         //Add ActionListeners, tooltip texts and fonts to controlPanel buttons
-        newP.addActionListener(this);
-        newP.setToolTipText("New game against another player");
-        newP.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
+        resetButton.addActionListener(this);
+        resetButton.setToolTipText("New game against another player");
+        resetButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 
-        //For future development (PVC)
-        //newX.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
-        //newX.addActionListener(this);
-        //newX.setToolTipText("New game against the computer as X");
-
-        //newO.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
-        //newO.addActionListener(this);
-        //newO.setToolTipText("New game against the computer as O");
 
         //Add buttons to panels
         gamePanel.add(b1);
@@ -104,7 +96,7 @@ public class TicTacToe extends JFrame implements ActionListener {
         gamePanel.add(b7);
         gamePanel.add(b8);
         gamePanel.add(b9);
-        controlPanel.add(newP);
+        controlPanel.add(resetButton);
 
 
         //Add panels
@@ -115,6 +107,12 @@ public class TicTacToe extends JFrame implements ActionListener {
         setVisible(true);
         setResizable(false);
 
+    }
+    public void gameStart(){
+        playing = true;
+    }
+    public void stopGame(){
+        playing = false;
     }
 
     public void resetGame() {
@@ -144,28 +142,20 @@ public class TicTacToe extends JFrame implements ActionListener {
         for (int i = 1; i <= 9; i++)
             aMoves[i] = '\u0000';
 
-        //For Future Development (PVC)
-        //Reset wins
-        //Xwin = false;
-        //Owin = false;
-
         //Reset check
         check = true;
+
+        //Reset playing status
+        gameStart();
 
         //Reset counter - Simply comment the next line out if it is desired for X and O to take turns starting each game.
         count = 0;
     }
 
-    //Main method
-    public static void main(String[] args) {
-        //Creates 'Tic Tac Toe' window
-        new TicTacToe();
-    }
-
     //Event-handling method
     public void actionPerformed(ActionEvent event) {
         //Handle control clicks
-        if (newP == event.getSource()) {
+        if (resetButton == event.getSource()) {
             resetGame();
         }
 
@@ -321,17 +311,17 @@ public class TicTacToe extends JFrame implements ActionListener {
                             (aMoves[3] == aMoves[5] && aMoves[3] == aMoves[7] && aMoves[3] == 'X')
             ) {
 
-                //For Future Development (PVC)
-                //Set as player X won
-                //Xwin = true;
 
                 //Set false to stop rechecking
                 check = false;
 
+                playerXWin = true;
+                playerOWin = false;
+                stopGame();
+
                 //Show Message dialog that player X wins
                 JOptionPane.showMessageDialog(rootPane, new JLabel("<html><div style='text-align: center;'>" + "Congratulations!<br>Player X wins!" +
-                        "</div></html>", JLabel.CENTER), (new String(new char[] {71, 97, 109, 101, 32, 99, 114, 101, 97, 116, 101, 100, 32, 98, 121}) +
-                        new String(new char[] {32, 82, 97, 121, 109, 111, 110, 100, 32, 76, 105})), JOptionPane.PLAIN_MESSAGE);
+                        "</div></html>", JLabel.CENTER), "END GAME" , JOptionPane.PLAIN_MESSAGE);
 
                 //Stop further clicks on game buttons
                 c1 = false;
@@ -363,17 +353,15 @@ public class TicTacToe extends JFrame implements ActionListener {
                             (aMoves[3] == aMoves[5] && aMoves[3] == aMoves[7] && aMoves[3] == 'O')
             ) {
 
-                //For Future Development (PVC)
-                //Set as player O won
-                //Owin = true;
-
                 //Set false to stop rechecking
                 check = false;
 
+                playerXWin = false;
+                playerOWin = true;
+                stopGame();
                 //Show Message dialog that player O wins
                 JOptionPane.showMessageDialog(rootPane, new JLabel("<html><div style='text-align: center;'>" + "Congratulations!<br>Player O wins!" +
-                        "</div></html>", JLabel.CENTER), (new String(new char[] {71, 97, 109, 101, 32, 99, 114, 101, 97, 116, 101, 100, 32, 98, 121}) +
-                        new String(new char[] {32, 82, 97, 121, 109, 111, 110, 100, 32, 76, 105})), JOptionPane.PLAIN_MESSAGE);
+                        "</div></html>", JLabel.CENTER), "END GAME" , JOptionPane.PLAIN_MESSAGE);
 
                 //Stop further clicks on game buttons
                 c1 = false;
@@ -385,7 +373,6 @@ public class TicTacToe extends JFrame implements ActionListener {
                 c7 = false;
                 c8 = false;
                 c9 = false;
-
             }
 
             //Case of tie
@@ -394,10 +381,12 @@ public class TicTacToe extends JFrame implements ActionListener {
                 //Set false to stop rechecking
                 check = false;
 
+                playerXWin = false;
+                playerOWin = false;
+
                 //Show Message dialog that the game is a tie
-                JOptionPane.showMessageDialog(rootPane, new JLabel("<html><div style='text-align: center;'>" + "Congratulations!<br>The game is a tie!" +
-                        "</div></html>", JLabel.CENTER), (new String(new char[] {71, 97, 109, 101, 32, 99, 114, 101, 97, 116, 101, 100, 32, 98, 121}) +
-                        new String(new char[] {32, 82, 97, 121, 109, 111, 110, 100, 32, 76, 105})), JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(rootPane, new JLabel("<html><div style='text-align: center;'>" + "DRAW, Nobody win!" +
+                        "</div></html>", JLabel.CENTER), "END GAME", JOptionPane.PLAIN_MESSAGE);
 
             }
 

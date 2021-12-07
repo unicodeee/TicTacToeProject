@@ -18,37 +18,7 @@ public class TicTacToe extends JFrame implements ActionListener {
     //Add panels
     JPanel gamePanel = new JPanel();
     JPanel controlPanel = new JPanel();
-
-    //Add control buttons
-    JButton resetButton = new JButton("New PVP"); //(New Version, simpler)
-
-    //Add game buttons
-    JButton b1 = new JButton();
-    JButton b2 = new JButton();
-    JButton b3 = new JButton();
-    JButton b4 = new JButton();
-    JButton b5 = new JButton();
-    JButton b6 = new JButton();
-    JButton b7 = new JButton();
-    JButton b8 = new JButton();
-    JButton b9 = new JButton();
-
-    //Declare class variables
-    private static int count = 0;
-    private static boolean c1 = true, c2 = true, c3 = true, c4 = true, c5 = true, c6 = true, c7 = true, c8 = true, c9 = true;
-    private static char[] aMoves = new char[10];
-    private static boolean check = true;
-
-
-    //Constructor
-    public TicTacToe() {
-        // Set playing status to true
-        playing = true;
-
-        //Set title, size, layout (grid [2x1]), and location of GUI window
-        setTitle("Tic Tac Toe");
-        setSize(360, 720);
-        getContentPane().setLayout(new GridLayout(2,1));
+2,1));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

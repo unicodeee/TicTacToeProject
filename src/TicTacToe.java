@@ -1,15 +1,37 @@
 package src;
 
+import src.TestListener.Observer;
+import src.TestListener.Subject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 
 //SuppressWarnings unused and serial
 @SuppressWarnings({"unused", "serial"})
 
 //Main class with JFrame and ActionListener enabled
-public class TicTacToe extends JFrame implements ActionListener {
+public class TicTacToe extends JFrame implements ActionListener, Subject {
+
+    private List<Observer> observers = new ArrayList<>();
+    @Override
+    public void attach(Observer o) {
+        observers.add(o);
+    }
+    @Override
+    public void detach(Observer o) {
+        observers.remove(o);
+    }
+    @Override
+    public void notifyUpdate(boolean xwin, boolean owin, String message) {
+        for (Observer o : observers){
+            o.update(playerXWin, playerOWin, message);
+        }
+    }
 
     public boolean playing = false;
     public boolean playerXWin = false;
@@ -115,7 +137,18 @@ public class TicTacToe extends JFrame implements ActionListener {
         playing = false;
     }
 
+    public void checkWinning(Manage manager){
+        if (playerXWin){
+            manager.setXwin();
+        }
+        if (playerOWin){
+            manager.setOwin();
+        }
+    }
     public void resetGame() {
+        playerXWin = false;
+        playerOWin = false;
+
         //Reset button text
         b1.setText("");
         b2.setText("");
@@ -145,8 +178,6 @@ public class TicTacToe extends JFrame implements ActionListener {
         //Reset check
         check = true;
 
-        //Reset playing status
-        gameStart();
 
         //Reset counter - Simply comment the next line out if it is desired for X and O to take turns starting each game.
         count = 0;
@@ -154,11 +185,16 @@ public class TicTacToe extends JFrame implements ActionListener {
 
     //Event-handling method
     public void actionPerformed(ActionEvent event) {
-        //Handle control clicks
+        //Handle resetButton clicks
         if (resetButton == event.getSource()) {
             resetGame();
-        }
+            if(!playing){  // this condition to prevent dequeue() when accidentally click the reset button while the game is still being played.
+                gameStart();
+                notifyUpdate(false, false, "newgame");
 
+            }
+
+        }
         //Handle game clicks
         if (count % 2 == 0) {
 
@@ -318,6 +354,7 @@ public class TicTacToe extends JFrame implements ActionListener {
                 playerXWin = true;
                 playerOWin = false;
                 stopGame();
+                notifyUpdate(playerXWin, playerOWin, ""); // the manager to update the winner when X win
 
                 //Show Message dialog that player X wins
                 JOptionPane.showMessageDialog(rootPane, new JLabel("<html><div style='text-align: center;'>" + "Congratulations!<br>Player X wins!" +
@@ -358,6 +395,7 @@ public class TicTacToe extends JFrame implements ActionListener {
 
                 playerXWin = false;
                 playerOWin = true;
+                notifyUpdate(playerXWin, playerOWin, " ");
                 stopGame();
                 //Show Message dialog that player O wins
                 JOptionPane.showMessageDialog(rootPane, new JLabel("<html><div style='text-align: center;'>" + "Congratulations!<br>Player O wins!" +
@@ -383,6 +421,7 @@ public class TicTacToe extends JFrame implements ActionListener {
 
                 playerXWin = false;
                 playerOWin = false;
+
 
                 //Show Message dialog that the game is a tie
                 JOptionPane.showMessageDialog(rootPane, new JLabel("<html><div style='text-align: center;'>" + "DRAW, Nobody win!" +
